@@ -204,6 +204,67 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
 
 .fullscreen-btn { background: transparent; color: var(--text-dark); border: 2px solid #e2e8f0; }
 .fullscreen-btn:hover { background: #f1f5f9; color: var(--primary); }
+
+/* 9. PRINT STYLES (PDF Generation) */
+@media print {
+    /* Setup Page */
+    @page {
+        size: landscape;
+        margin: 0;
+    }
+
+    /* Reset Body/Wrapper to normal flow */
+    body, html {
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        background-color: white;
+        display: block;
+    }
+
+    #deck-wrapper {
+        width: 100%;
+        height: auto;
+        transform: none !important; /* Disable JS scaling */
+        box-shadow: none;
+        background: none;
+        display: block;
+    }
+
+    /* Make all slides visible and sequential */
+    .slide-container {
+        display: flex !important; /* Default flex layout for print */
+        flex-direction: column;
+        opacity: 1 !important;
+        position: relative !important;
+        width: 100% !important;
+        height: 100vh !important; /* Force full page */
+        page-break-after: always; /* Legacy break */
+        break-after: page; /* Modern break */
+        border: none;
+        box-shadow: none;
+        margin: 0 !important;
+        left: auto !important;
+        top: auto !important;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    /* Grid Layouts for Print */
+    .slide-container.bleed-image-layout {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .slide-container.section-slide {
+        display: flex !important;
+    }
+
+    /* Hide UI Controls */
+    .controls-container {
+        display: none !important;
+    }
+}
     </style>
 </head>
 <body>
