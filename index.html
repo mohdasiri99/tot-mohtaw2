@@ -33,40 +33,27 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #000; /* Fallback */
+    background: #000;
     box-shadow: 0 0 50px rgba(0,0,0,0.5);
-    /* Transform managed by JS */
 }
 
-/* 3. SLIDE CONTAINER - CORE LOGIC */
+/* 3. SLIDE CONTAINER */
 .slide-container {
     background-color: #ffffff;
     width: 1280px;
     height: 720px;
-    /* CRITICAL: Hidden by default so no layout calculation happens */
     display: none; 
-    padding: 40px 60px; /* Adjusted padding */
+    padding: 40px 60px 70px 60px; /* Added bottom padding for footer */
     overflow: hidden;
     position: relative;
 }
 
-/* 4. ACTIVE STATES (Layout Modes) */
-
-/* Default Layout: Flex Column */
+/* 4. ACTIVE STATES */
 .slide-container.active {
     display: flex;
     flex-direction: column;
 }
 
-/* Split Layout: Grid */
-.slide-container.bleed-image-layout.active {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 50% Text | 50% Image */
-    padding: 0;
-    align-items: stretch;
-}
-
-/* Centered Layout */
 .slide-container.section-slide.active {
     justify-content: center;
     align-items: center;
@@ -95,7 +82,7 @@ body {
 }
 .slide-container > * { position: relative; z-index: 1; }
 
-/* 6. TYPOGRAPHY (Optimized sizes) */
+/* 6. TYPOGRAPHY */
 h1 { font-size: 64px; font-weight: 900; color: var(--primary); margin: 0; line-height: 1.2; }
 h2 { font-size: 48px; font-weight: 700; color: var(--primary); margin: 0 0 25px 0; }
 h3 { font-size: 28px; font-weight: 700; color: var(--secondary); margin: 0 0 10px 0; }
@@ -106,12 +93,9 @@ p, li { font-size: 22px; color: var(--text-dark); line-height: 1.5; }
 .content-area { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 
 /* 7. COMPONENTS */
-
-/* Grids */
 .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; height: 100%; }
 .tiled-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; width: 100%; }
 
-/* Cards/Tiles */
 .tile { 
     background: var(--bg-light); 
     border: 1px solid #e2e8f0; 
@@ -123,7 +107,6 @@ p, li { font-size: 22px; color: var(--text-dark); line-height: 1.5; }
 .tile h3 { display: flex; align-items: center; gap: 10px; }
 .tile i { color: var(--accent); }
 
-/* Lists */
 ul.styled-list { list-style: none; padding: 0; margin: 0; }
 ul.styled-list li { 
     background-color: #fff; 
@@ -135,17 +118,9 @@ ul.styled-list li {
     display: flex; 
     align-items: center; 
     font-weight: 600; 
-    font-size: 20px; /* Slightly smaller for lists */
+    font-size: 20px;
 }
 ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px; }
-
-/* Images */
-.img-container { width: 100%; height: 100%; position: relative; border-radius: 12px; overflow: hidden; }
-.img-container img { width: 100%; height: 100%; object-fit: cover; }
-
-/* Bleed Layout Specifics */
-.bleed-text-side { padding: 60px; display: flex; flex-direction: column; justify-content: center; height: 100%; }
-.bleed-image-side { height: 720px; width: 100%; object-fit: cover; display: block; }
 
 /* Section Slides */
 .section-slide { background-color: var(--primary); color: white; }
@@ -158,6 +133,25 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
 .kpi-item { display: flex; align-items: center; background: #fff; padding: 20px; border-radius: 12px; border-left: 8px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 .kpi-icon { font-size: 35px; color: var(--primary); margin-left: 25px; }
 .quote-box { text-align: center; padding: 40px; background: #f0fdf4; border-radius: 20px; border: 2px dashed var(--primary); }
+
+/* FOOTER */
+.slide-footer {
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    color: var(--text-light);
+    border-top: 1px solid #e2e8f0;
+    padding-top: 15px;
+    width: 90%;
+    left: 5%; /* Center align with margin */
+}
+.section-slide .slide-footer {
+    color: rgba(255,255,255,0.7);
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
 
 /* 8. CONTROLS */
 .controls-container {
@@ -205,42 +199,20 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
 .fullscreen-btn { background: transparent; color: var(--text-dark); border: 2px solid #e2e8f0; }
 .fullscreen-btn:hover { background: #f1f5f9; color: var(--primary); }
 
-/* 9. PRINT STYLES (PDF Generation) */
+/* 9. PRINT STYLES */
 @media print {
-    /* Setup Page */
-    @page {
-        size: landscape;
-        margin: 0;
-    }
-
-    /* Reset Body/Wrapper to normal flow */
-    body, html {
-        width: 100%;
-        height: auto;
-        overflow: visible;
-        background-color: white;
-        display: block;
-    }
-
-    #deck-wrapper {
-        width: 100%;
-        height: auto;
-        transform: none !important; /* Disable JS scaling */
-        box-shadow: none;
-        background: none;
-        display: block;
-    }
-
-    /* Make all slides visible and sequential */
+    @page { size: landscape; margin: 0; }
+    body, html { width: 100%; height: auto; overflow: visible; background-color: white; display: block; }
+    #deck-wrapper { width: 100%; height: auto; transform: none !important; box-shadow: none; background: none; display: block; }
     .slide-container {
-        display: flex !important; /* Default flex layout for print */
+        display: flex !important;
         flex-direction: column;
         opacity: 1 !important;
         position: relative !important;
         width: 100% !important;
-        height: 100vh !important; /* Force full page */
-        page-break-after: always; /* Legacy break */
-        break-after: page; /* Modern break */
+        height: 100vh !important;
+        page-break-after: always;
+        break-after: page;
         border: none;
         box-shadow: none;
         margin: 0 !important;
@@ -249,21 +221,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
         print-color-adjust: exact;
         -webkit-print-color-adjust: exact;
     }
-
-    /* Grid Layouts for Print */
-    .slide-container.bleed-image-layout {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr;
-    }
-    
-    .slide-container.section-slide {
-        display: flex !important;
-    }
-
-    /* Hide UI Controls */
-    .controls-container {
-        display: none !important;
-    }
+    .controls-container { display: none !important; }
 }
     </style>
 </head>
@@ -274,20 +232,17 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
     <!-- Slide 1: Title -->
     <div class="slide-container active section-slide" style="background-image: linear-gradient(rgba(0, 30, 20, 0.85), rgba(0, 30, 20, 0.85)), url('http://googleusercontent.com/image_collection/image_retrieval/7770575554004978976'); background-size: cover;">
         <div class="content-overlay" style="text-align: center; color: white;">
-            <h1 style="color: #fff; margin-bottom: 20px;">الممارسة المهنية للمدربين</h1>
-            <p style="color: var(--accent); font-size: 32px; font-weight: 700;">المجال الثاني: معايير هيئة تقويم التعليم والتدريب</p>
-            <div style="margin-top: 60px;">
-                <p style="color: #fff; margin:0; font-size: 26px;">إعداد: محمد علي عسيري</p>
-                <p style="color: #e2e8f0; margin:10px 0 0 0; font-size: 18px;">كوتش تطوير الأداء | @mohdasiri99</p>
-            </div>
+            <h1 style="color: #fff; margin-bottom: 20px;">المجال الثاني " الممارسة المهنية "</h1>
+            <p style="color: var(--accent); font-size: 32px; font-weight: 700;">( معايير هيئة تقويم التعليم والتدريب)</p>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide 2: Intro -->
     <div class="slide-container">
         <div class="content-wrapper">
             <div class="slide-title-wrapper">
-                <h2>المجال الثاني: الممارسة المهنية</h2>
+                <h2>الممارسة المهنية</h2>
             </div>
             <div class="content-area">
                 <div class="kpi-item" style="padding: 40px;">
@@ -299,6 +254,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide 3: Scope -->
@@ -316,27 +272,40 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- SECTION 1 -->
     <div class="slide-container section-slide">
-        <h2>المعيار الأول: التخطيط والإعداد للتدريب</h2>
+        <h2>التخطيط والإعداد للتدريب</h2>
         <hr>
         <p>الاستعداد الجيد يمثل 80% من نجاح التدريب</p>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Checklist -->
-    <div class="slide-container bleed-image-layout">
-        <div class="bleed-text-side">
-            <h2>مراجعة الحقيبة التدريبية</h2>
-            <p>قبل الدخول للقاعة، يجب على المدرب:</p>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-check"></i> التأكد من تسلسل الشرائح والأنشطة.</li>
-                <li><i class="fa-solid fa-check"></i> مراجعة الأدلة والشواهد والأرقام الحديثة.</li>
-                <li><i class="fa-solid fa-check"></i> تجهيز خطة بديلة (Plan B) للطوارئ التقنية.</li>
-            </ul>
+    <!-- Slide: Checklist (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+            <div class="slide-title-wrapper">
+                <h2>مراجعة الحقيبة التدريبية</h2>
+            </div>
+            <div class="content-area">
+                <div class="two-column">
+                    <div>
+                        <p>قبل الدخول للقاعة، يجب على المدرب:</p>
+                        <ul class="styled-list">
+                            <li><i class="fa-solid fa-check"></i> التأكد من تسلسل الشرائح والأنشطة.</li>
+                            <li><i class="fa-solid fa-check"></i> مراجعة الأدلة والشواهد والأرقام الحديثة.</li>
+                            <li><i class="fa-solid fa-check"></i> تجهيز خطة بديلة (Plan B) للطوارئ التقنية.</li>
+                        </ul>
+                    </div>
+                    <div class="tile" style="text-align:center;">
+                         <i class="fa-solid fa-clipboard-check" style="font-size: 100px; color: var(--secondary);"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/4160182761093485641" alt="Trainer checking plan">
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Logistics -->
@@ -358,33 +327,62 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Golden Hour -->
-    <div class="slide-container bleed-image-layout">
-        <div class="bleed-text-side">
-            <h2>ساعة ما قبل البدء (The Golden Hour)</h2>
-            <p>استثمار الساعة الذهبية قبل وصول المتدربين:</p>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-music"></i> <strong>الموسيقى:</strong> تشغيل موسيقى هادئة لاستقبال المتدربين.</li>
-                <li><i class="fa-solid fa-temperature-arrow-up"></i> <strong>التكييف:</strong> ضبط الحرارة لتكون مائلة للبرودة (للحفاظ على النشاط).</li>
-                <li><i class="fa-solid fa-route"></i> <strong>المسارات:</strong> التأكد من خلو الممرات من الأسلاك.</li>
-            </ul>
+    <!-- Slide: Golden Hour (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+             <div class="slide-title-wrapper">
+                <h2>ساعة ما قبل البدء (The Golden Hour)</h2>
+            </div>
+            <div class="content-area">
+                <div class="two-column">
+                    <div>
+                         <p>استثمار الساعة الذهبية قبل وصول المتدربين:</p>
+                        <ul class="styled-list">
+                            <li><i class="fa-solid fa-music"></i> <strong>الموسيقى:</strong> تشغيل موسيقى هادئة لاستقبال المتدربين.</li>
+                            <li><i class="fa-solid fa-temperature-arrow-up"></i> <strong>التكييف:</strong> ضبط الحرارة لتكون مائلة للبرودة (للحفاظ على النشاط).</li>
+                            <li><i class="fa-solid fa-route"></i> <strong>المسارات:</strong> التأكد من خلو الممرات من الأسلاك.</li>
+                        </ul>
+                    </div>
+                    <div class="tile" style="text-align:center;">
+                        <i class="fa-solid fa-hourglass-start" style="font-size: 100px; color: var(--accent);"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/13216591004445225782" alt="Preparing Room">
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Seating -->
-    <div class="slide-container bleed-image-layout">
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/13566734009477312540" alt="Seating">
-        <div class="bleed-text-side">
-            <h2>تهيئة بيئة التدريب: ترتيب المقاعد</h2>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-u"></i> <strong>حرف U:</strong> للنقاش والحوار (الأكثر شيوعاً).</li>
-                <li><i class="fa-solid fa-people-group"></i> <strong>المجموعات:</strong> لورش العمل والتمارين الجماعية.</li>
-                <li><i class="fa-solid fa-person-chalkboard"></i> <strong>المسرحي:</strong> للمحاضرات ذات العدد الكبير.</li>
-            </ul>
+    <!-- Slide: Seating (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+            <div class="slide-title-wrapper">
+                <h2>تهيئة بيئة التدريب: ترتيب المقاعد</h2>
+            </div>
+            <div class="content-area">
+                <div class="tiled-grid">
+                    <div class="tile">
+                        <h3><i class="fa-solid fa-u"></i> حرف U</h3>
+                        <p>للنقاش والحوار (الأكثر شيوعاً).</p>
+                    </div>
+                    <div class="tile">
+                        <h3><i class="fa-solid fa-people-group"></i> المجموعات</h3>
+                        <p>لورش العمل والتمارين الجماعية.</p>
+                    </div>
+                    <div class="tile">
+                        <h3><i class="fa-solid fa-person-chalkboard"></i> المسرحي</h3>
+                        <p>للمحاضرات ذات العدد الكبير.</p>
+                    </div>
+                    <div class="tile">
+                        <h3><i class="fa-solid fa-circle-notch"></i> الدائري</h3>
+                        <p>لتعزيز المساواة والمشاركة الكاملة.</p>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Safety -->
@@ -410,6 +408,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Mental Prep -->
@@ -431,13 +430,15 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- SECTION 2 -->
     <div class="slide-container section-slide">
-        <h2>المعيار الثاني: مهارات العرض والإلقاء</h2>
+        <h2>مهارات العرض والإلقاء</h2>
         <hr>
         <p>فن إيصال الرسالة والتأثير في الجمهور</p>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: First Impression -->
@@ -458,6 +459,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Stage Fright -->
@@ -475,6 +477,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Vocal Variety -->
@@ -492,33 +495,58 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Mic Tech -->
-    <div class="slide-container bleed-image-layout">
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/6314352136065507727" alt="Microphone">
-        <div class="bleed-text-side">
-            <h2>تقنيات استخدام الميكروفون</h2>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-microphone-lines"></i> <strong>اليدوي:</strong> امسكه بثبات أسفل الذقن بمسافة 5-10 سم.</li>
-                <li><i class="fa-solid fa-user-tie"></i> <strong>اللاقط (Lapel):</strong> ثبته في منتصف الصدر وتجنب احتكاك الملابس.</li>
-                <li><i class="fa-solid fa-volume-xmark"></i> <strong>اختبار الصوت:</strong> تجنب "النفخ" في الميكروفون.</li>
-            </ul>
+    <!-- Slide: Mic Tech (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+             <div class="slide-title-wrapper">
+                <h2>تقنيات استخدام الميكروفون</h2>
+            </div>
+            <div class="content-area">
+                <div class="two-column">
+                    <div class="tile">
+                        <h3><i class="fa-solid fa-microphone-lines"></i> الميكروفون اليدوي</h3>
+                        <p>امسكه بثبات أسفل الذقن بمسافة 5-10 سم.</p>
+                    </div>
+                     <div class="tile">
+                        <h3><i class="fa-solid fa-user-tie"></i> اللاقط (Lapel)</h3>
+                        <p>ثبته في منتصف الصدر وتجنب احتكاك الملابس.</p>
+                    </div>
+                </div>
+                <div class="tile" style="margin-top: 20px;">
+                     <h3><i class="fa-solid fa-volume-xmark"></i> اختبار الصوت</h3>
+                     <p>تجنب "النفخ" في الميكروفون، تحدث بشكل طبيعي لاختبار الصوت.</p>
+                </div>
+            </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Body Language -->
-    <div class="slide-container bleed-image-layout">
-        <div class="bleed-text-side">
-            <h2>لغة الجسد (Body Language)</h2>
-            <p>تمثل 55% من أثر الرسالة.</p>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-hands"></i> <strong>الإيماءات:</strong> مفتوحة وطبيعية (تجنب التكتيف).</li>
-                <li><i class="fa-solid fa-eye"></i> <strong>التواصل البصري:</strong> توزيع النظرات بالتساوي.</li>
-                <li><i class="fa-solid fa-person-walking"></i> <strong>الحركة:</strong> هادفة ومتزنة.</li>
-            </ul>
+    <!-- Slide: Body Language (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+            <div class="slide-title-wrapper">
+                <h2>لغة الجسد (Body Language)</h2>
+            </div>
+            <div class="content-area">
+                <div class="two-column">
+                    <div>
+                        <p>تمثل 55% من أثر الرسالة.</p>
+                        <ul class="styled-list">
+                            <li><i class="fa-solid fa-hands"></i> <strong>الإيماءات:</strong> مفتوحة وطبيعية (تجنب التكتيف).</li>
+                            <li><i class="fa-solid fa-eye"></i> <strong>التواصل البصري:</strong> توزيع النظرات بالتساوي.</li>
+                            <li><i class="fa-solid fa-person-walking"></i> <strong>الحركة:</strong> هادفة ومتزنة.</li>
+                        </ul>
+                    </div>
+                     <div class="tile" style="text-align:center;">
+                        <i class="fa-solid fa-person-rays" style="font-size: 100px; color: var(--primary);"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/16281075398476823175" alt="Gestures">
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Eye Contact -->
@@ -543,6 +571,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Movement -->
@@ -564,6 +593,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Ice Breaking -->
@@ -585,13 +615,15 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- SECTION 3 -->
     <div class="slide-container section-slide">
-        <h2>المعيار الثالث: تنفيذ استراتيجيات التدريب</h2>
+        <h2>تنفيذ استراتيجيات التدريب</h2>
         <hr>
         <p>تحويل القاعة إلى ورشة عمل تفاعلية</p>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Facilitation -->
@@ -611,6 +643,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Question Types -->
@@ -628,19 +661,31 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Groups -->
-    <div class="slide-container bleed-image-layout">
-        <div class="bleed-text-side">
-            <h2>إدارة مجموعات العمل</h2>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-1"></i> تحديد المهمة بوضوح والوقت المتاح.</li>
-                <li><i class="fa-solid fa-2"></i> تعيين قائد وميقاتي لكل مجموعة.</li>
-                <li><i class="fa-solid fa-3"></i> التجول بين المجموعات للتوجيه والدعم.</li>
-            </ul>
+    <!-- Slide: Groups (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+            <div class="slide-title-wrapper">
+                <h2>إدارة مجموعات العمل</h2>
+            </div>
+            <div class="content-area">
+                <div class="two-column">
+                    <div>
+                         <ul class="styled-list">
+                            <li><i class="fa-solid fa-1"></i> تحديد المهمة بوضوح والوقت المتاح.</li>
+                            <li><i class="fa-solid fa-2"></i> تعيين قائد وميقاتي لكل مجموعة.</li>
+                            <li><i class="fa-solid fa-3"></i> التجول بين المجموعات للتوجيه والدعم.</li>
+                        </ul>
+                    </div>
+                     <div class="tile" style="text-align:center;">
+                        <i class="fa-solid fa-users-viewfinder" style="font-size: 100px; color: var(--secondary);"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/4455033514833354102" alt="Group Work">
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Brainstorming -->
@@ -657,6 +702,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Parking Lot -->
@@ -677,6 +723,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Storytelling -->
@@ -692,6 +739,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 <p style="margin-top:40px; text-align:center;">استخدم القصص الواقعية لربط المفاهيم النظرية بالتطبيق العملي، مما يزيد من معدل التذكر.</p>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Gamification -->
@@ -707,26 +755,39 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Case Study -->
-    <div class="slide-container bleed-image-layout">
-        <div class="bleed-text-side">
-            <h2>أسلوب دراسات الحالة</h2>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-magnifying-glass"></i> <strong>التحليل:</strong> قراءة فردية للحالة.</li>
-                <li><i class="fa-solid fa-people-arrows"></i> <strong>المناقشة:</strong> تحليل الأسباب والحلول جماعياً.</li>
-                <li><i class="fa-solid fa-bullhorn"></i> <strong>الاستخلاص:</strong> ربط الحلول بالمفاهيم النظرية.</li>
-            </ul>
+    <!-- Slide: Case Study (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+            <div class="slide-title-wrapper">
+                <h2>أسلوب دراسات الحالة</h2>
+            </div>
+            <div class="content-area">
+                <div class="two-column">
+                    <div>
+                         <ul class="styled-list">
+                            <li><i class="fa-solid fa-magnifying-glass"></i> <strong>التحليل:</strong> قراءة فردية للحالة.</li>
+                            <li><i class="fa-solid fa-people-arrows"></i> <strong>المناقشة:</strong> تحليل الأسباب والحلول جماعياً.</li>
+                            <li><i class="fa-solid fa-bullhorn"></i> <strong>الاستخلاص:</strong> ربط الحلول بالمفاهيم النظرية.</li>
+                        </ul>
+                    </div>
+                    <div class="tile" style="text-align:center;">
+                        <i class="fa-solid fa-file-contract" style="font-size: 100px; color: var(--primary);"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/10591612261917283491" alt="Analysis">
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- SECTION 4 -->
     <div class="slide-container section-slide">
-        <h2>المعيار الرابع: إدارة التفاعل والسلوكيات</h2>
+        <h2>إدارة التفاعل والسلوكيات</h2>
         <hr>
         <p>الذكاء العاطفي والاجتماعي في القاعة</p>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Difficult People -->
@@ -743,6 +804,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Talkative -->
@@ -764,6 +826,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Shy -->
@@ -785,19 +848,31 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Arguer -->
-    <div class="slide-container bleed-image-layout">
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/4489873609316108194" alt="Arguments">
-        <div class="bleed-text-side">
-            <h2>النمط المعارض/المجادل</h2>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-shield-halved"></i> <strong>الهدوء:</strong> حافظ على ابتسامتك وهدوئك.</li>
-                <li><i class="fa-solid fa-scale-unbalanced"></i> <strong>الاعتراف:</strong> "وجهة نظر تحترم...".</li>
-                <li><i class="fa-solid fa-arrow-right-from-bracket"></i> <strong>التأجيل:</strong> "دعنا نناقشها بالتفصيل في الاستراحة".</li>
-            </ul>
+    <!-- Slide: Arguer (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+             <div class="slide-title-wrapper">
+                <h2>النمط المعارض/المجادل</h2>
+            </div>
+            <div class="content-area">
+                <div class="two-column">
+                    <div>
+                         <ul class="styled-list">
+                            <li><i class="fa-solid fa-shield-halved"></i> <strong>الهدوء:</strong> حافظ على ابتسامتك وهدوئك.</li>
+                            <li><i class="fa-solid fa-scale-unbalanced"></i> <strong>الاعتراف:</strong> "وجهة نظر تحترم...".</li>
+                            <li><i class="fa-solid fa-arrow-right-from-bracket"></i> <strong>التأجيل:</strong> "دعنا نناقشها بالتفصيل في الاستراحة".</li>
+                        </ul>
+                    </div>
+                    <div class="tile" style="text-align:center;">
+                        <i class="fa-solid fa-gavel" style="font-size: 100px; color: var(--secondary);"></i>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Know it all -->
@@ -819,6 +894,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Side Talks -->
@@ -835,6 +911,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Motivation -->
@@ -850,6 +927,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Energy -->
@@ -871,6 +949,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Time Mgmt -->
@@ -887,26 +966,39 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </ul>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- SECTION 5 -->
     <div class="slide-container section-slide">
-        <h2>المعيار الخامس: توظيف التقنية</h2>
+        <h2>توظيف التقنية</h2>
         <hr>
         <p>المدرب الرقمي المتمكن</p>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Tech Tools -->
-    <div class="slide-container bleed-image-layout">
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/2326282163566528174" alt="Tablet">
-        <div class="bleed-text-side">
-            <h2>أدوات العرض الذكية</h2>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-pen-to-square"></i> الكتابة الحية على الشاشة (Inking).</li>
-                <li><i class="fa-solid fa-mobile-screen"></i> تطبيقات التفاعل الفوري (Kahoot, Mentimeter).</li>
-                <li><i class="fa-solid fa-video"></i> استخدام الوسائط المتعددة عالية الجودة.</li>
-            </ul>
+    <!-- Slide: Tech Tools (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+             <div class="slide-title-wrapper">
+                <h2>أدوات العرض الذكية</h2>
+            </div>
+            <div class="content-area">
+                <div class="two-column">
+                    <div>
+                        <ul class="styled-list">
+                            <li><i class="fa-solid fa-pen-to-square"></i> الكتابة الحية على الشاشة (Inking).</li>
+                            <li><i class="fa-solid fa-mobile-screen"></i> تطبيقات التفاعل الفوري (Kahoot, Mentimeter).</li>
+                            <li><i class="fa-solid fa-video"></i> استخدام الوسائط المتعددة عالية الجودة.</li>
+                        </ul>
+                    </div>
+                     <div class="tile" style="text-align:center;">
+                        <i class="fa-solid fa-tablet-screen-button" style="font-size: 100px; color: var(--accent);"></i>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Virtual -->
@@ -928,6 +1020,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Tech Crisis -->
@@ -943,13 +1036,15 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- SECTION 6 -->
     <div class="slide-container section-slide">
-        <h2>المعيار السادس: التقويم أثناء الممارسة</h2>
+        <h2>التقويم أثناء الممارسة</h2>
         <hr>
         <p>قياس النبض المستمر</p>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Read Room -->
@@ -964,19 +1059,31 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Formative -->
-    <div class="slide-container bleed-image-layout">
-        <div class="bleed-text-side">
-            <h2>التقويم التكويني (المستمر)</h2>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-question"></i> طرح أسئلة التحقق (Checking Questions).</li>
-                <li><i class="fa-solid fa-list-check"></i> طلب ملخص سريع من أحد المتدربين.</li>
-                <li><i class="fa-solid fa-thumbs-up"></i> استخدام إشارات اليد السريعة.</li>
-            </ul>
+    <!-- Slide: Formative (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+            <div class="slide-title-wrapper">
+                <h2>التقويم التكويني (المستمر)</h2>
+            </div>
+            <div class="content-area">
+                <div class="two-column">
+                    <div>
+                         <ul class="styled-list">
+                            <li><i class="fa-solid fa-question"></i> طرح أسئلة التحقق (Checking Questions).</li>
+                            <li><i class="fa-solid fa-list-check"></i> طلب ملخص سريع من أحد المتدربين.</li>
+                            <li><i class="fa-solid fa-thumbs-up"></i> استخدام إشارات اليد السريعة.</li>
+                        </ul>
+                    </div>
+                     <div class="tile" style="text-align:center;">
+                        <i class="fa-solid fa-clipboard-question" style="font-size: 100px; color: var(--primary);"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/1477250846378397862" alt="Feedback">
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Feedback -->
@@ -994,19 +1101,31 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
-    <!-- Slide: Active Listening -->
-    <div class="slide-container bleed-image-layout">
-        <img class="bleed-image-side" src="http://googleusercontent.com/image_collection/image_retrieval/12061099187114675549" alt="Listening">
-        <div class="bleed-text-side">
-            <h2>الإنصات النشط</h2>
-            <ul class="styled-list">
-                <li><i class="fa-solid fa-ear-listen"></i> <strong>للفهم:</strong> لا تستمع فقط لترد.</li>
-                <li><i class="fa-solid fa-eye"></i> <strong>لغة الجسد:</strong> هز الرأس والتواصل البصري.</li>
-                <li><i class="fa-solid fa-rotate"></i> <strong>إعادة الصياغة:</strong> "ما فهمته هو... صحيح؟"</li>
-            </ul>
+    <!-- Slide: Active Listening (IMAGE REMOVED) -->
+    <div class="slide-container">
+        <div class="content-wrapper">
+             <div class="slide-title-wrapper">
+                <h2>الإنصات النشط</h2>
+            </div>
+            <div class="content-area">
+                <div class="two-column">
+                    <div>
+                        <ul class="styled-list">
+                            <li><i class="fa-solid fa-ear-listen"></i> <strong>للفهم:</strong> لا تستمع فقط لترد.</li>
+                            <li><i class="fa-solid fa-eye"></i> <strong>لغة الجسد:</strong> هز الرأس والتواصل البصري.</li>
+                            <li><i class="fa-solid fa-rotate"></i> <strong>إعادة الصياغة:</strong> "ما فهمته هو... صحيح؟"</li>
+                        </ul>
+                    </div>
+                    <div class="tile" style="text-align:center;">
+                        <i class="fa-solid fa-ear-deaf" style="font-size: 100px; color: var(--secondary);"></i>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Closing -->
@@ -1024,6 +1143,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Ethics -->
@@ -1041,6 +1161,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
                 </div>
             </div>
         </div>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Conclusion -->
@@ -1049,6 +1170,7 @@ ul.styled-list li i { color: var(--primary); margin-left: 15px; font-size: 24px;
         <p style="max-width:900px; margin:0 auto;">
             الممارسة المهنية ليست مجرد إلقاء، بل فن إدارة تجربة تعليمية متكاملة تلامس العقول والقلوب.
         </p>
+        <div class="slide-footer">محمد علي عسيري - مدرب وكوتش تطوير الأداء mohdasiri99@</div>
     </div>
 
     <!-- Slide: Author -->
